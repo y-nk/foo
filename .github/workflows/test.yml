@@ -29,4 +29,11 @@ jobs:
         project: ${{ fromJSON(needs.only-changed.outputs.projects) }}
 
     steps:
-      - run: echo ${{ matrix.project }}
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Find projects which have changed
+        uses: ./.github/actions/flow
+        with:
+          project: ${{ matrix.project }}
+          command: yarn test
