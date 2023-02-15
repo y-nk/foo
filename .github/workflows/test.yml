@@ -27,6 +27,7 @@ jobs:
     strategy:
       matrix:
         project: ${{ fromJSON(needs.only-changed.outputs.projects) }}
+      fail-fast: false
 
     steps:
       - name: Checkout repository
