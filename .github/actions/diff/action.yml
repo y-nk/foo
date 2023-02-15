@@ -1,0 +1,31 @@
+name: Find projects which were updated
+description: ''
+
+branding:
+  icon: git-branch
+  color: blue
+
+outputs:
+  result:
+    description: array of projects which have changed
+    value: ${{ steps.diff.outputs.result }}
+
+runs:
+  using: composite
+
+  steps:
+    - name: compute
+      uses: actions/github-script@v6
+      id: diff
+      with:
+        script: |
+          const util = require('util');
+          const bash = util.promisify(require('child_process').exec);
+
+          const { stdout, stderr } = await bash('git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}');
+
+          return stdout
+            .split('\n')
+            .filter(path => !path.startsWith('.')) // dotfiles ignored
+            .filter(path => path.includes('/')) // subfolders only
+            .map(path => path.split('/', 1).at(0)) // base folder only
