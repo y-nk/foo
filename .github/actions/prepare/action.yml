@@ -10,10 +10,6 @@ inputs:
     description: folder to run the flow in
     required: true
 
-  command:
-    description: the npm script to run
-    required: true
-
 runs:
   using: composite
 
@@ -34,9 +30,3 @@ runs:
       shell: bash
       working-directory: ${{ inputs.project }}
       run: yarn --frozen-lockfile
-
-    - name: Run "${{ inputs.command }}"
-
-      shell: bash
-      working-directory: ${{ inputs.project }}
-      run: ${{ inputs.command }}

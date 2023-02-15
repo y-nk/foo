@@ -32,8 +32,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Find projects which have changed
-        uses: ./.github/actions/flow
+      - name: Prepare repository
+        uses: ./.github/actions/prepare
         with:
           project: ${{ matrix.project }}
-          command: yarn test
+
+      - name: Run tests
+        working-directory: ${{ matrix.project }}
+        run: yarn test
+
+      - name: Try build
+        working-directory: ${{ matrix.project }}
+        run: yarn build
