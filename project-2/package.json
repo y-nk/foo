@@ -4,7 +4,9 @@
   "description": "hop",
   "main": "index.js",
   "scripts": {
-    "test": "echo 'project-2'"
+    "test": "echo 'test project-2'",
+    "build": "echo 'build project-2'",
+    "deply": "echo 'deply project-2'"
   },
   "keywords": [],
   "author": "",
