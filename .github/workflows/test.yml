@@ -1,0 +1,47 @@
+name: 🧪
+
+on:
+  pull_request:
+
+jobs:
+  only-changed:
+    runs-on: ubuntu-latest
+
+    outputs:
+      projects: ${{ steps.diff.outputs.result }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Find projects which have changed
+        uses: ./.github/actions/diff
+        id: diff
+
+  test:
+    runs-on: ubuntu-latest
+    needs: only-changed
+
+    strategy:
+      matrix:
+        project: ${{ fromJSON(needs.only-changed.outputs.projects) }}
+      fail-fast: false
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Prepare repository
+        uses: ./.github/actions/prepare
+        with:
+          project: ${{ matrix.project }}
+
+      - name: Run tests
+        working-directory: ${{ matrix.project }}
+        run: yarn test
+
+      - name: Try build
+        working-directory: ${{ matrix.project }}
+        run: yarn build

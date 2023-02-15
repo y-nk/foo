@@ -1,0 +1,17 @@
+{
+  "name": "project-2",
+  "version": "1.0.0",
+  "description": "hop",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo 'test project-2'",
+    "build": "echo 'build project-2'",
+    "deply": "echo 'deply project-2'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^4.9.5"
+  }
+}
