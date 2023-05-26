@@ -9,9 +9,6 @@ jobs:
     steps:
       - name: Failing task
         run: |
-           set +e
-           set +o pipefail
-           
            function yarn_e2e() {
              echo "attempt: $1"
              if [[ ! "$1" -eq "3" ]]; then
