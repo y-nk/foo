@@ -9,7 +9,12 @@ jobs:
     steps:
       - name: Failing task
         run: |
-          bash -c "echo subshell; false; echo $?; exit 0"
+          bash -c "\
+            echo 'in subshell'; \
+            false; \
+            echo 'capture error here:' $?; \
+            exit 0; \
+          "
                     
           echo "main exit code: $?"
           exit 0
