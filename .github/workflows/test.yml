@@ -13,7 +13,6 @@ jobs:
            set +o pipefail
            
            function yarn_e2e() {
-             local $1
              echo "attempt: $1"
              if [ $1 -eq 2 ]; then
                echo "should exit 1"
