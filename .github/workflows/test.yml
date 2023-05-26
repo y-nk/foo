@@ -16,7 +16,7 @@ jobs:
              echo "attempt: $1"
              if [[ ! "$1" -eq "3" ]]; then
                echo "should exit 1"
-               return 1
+               curl # this exits with $? != 0
              fi
              echo "should exit 0"
              return 0
