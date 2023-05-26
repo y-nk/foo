@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Failing task
         run: |
-          sh -c "echo subshell; false"
+          sh -c "echo subshell; false; echo $?; exit 0"
                     
           echo $?
           exit 0
