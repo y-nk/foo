@@ -11,7 +11,7 @@ jobs:
         run: |
           bash -c "\
             echo 'in subshell'; \
-            false; \
+            curl; \ # should return != 0
             echo 'capture error here:' $?; \
             exit 0; \
           "
