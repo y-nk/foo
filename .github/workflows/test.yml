@@ -9,6 +9,8 @@ jobs:
     steps:
       - name: Failing task
         run: |
+          set +e
+          
           echo 'test'
           externalcommand() {
             echo 'in externalcommand'
