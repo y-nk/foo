@@ -9,5 +9,8 @@ jobs:
     steps:
       - name: Failing task
         run: |
-           curl > output.log 2>&1 || true
+           set +e
+           set +o pipefail
+           
+           curl > output.log 2>&1
            cat output.log
