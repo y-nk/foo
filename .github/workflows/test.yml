@@ -9,5 +9,5 @@ jobs:
     steps:
       - name: Failing task
         run: |
-           curl > output 2>&1 || true
-           cat $output
+           curl > output.log 2>&1 || true
+           cat output.log
