@@ -9,12 +9,5 @@ jobs:
     steps:
       - name: Failing task
         run: |
-          bash -c "\
-            echo 'in subshell'; \
-            curl; \ # should return != 0
-            echo 'capture error here:' $?; \
-            exit 0; \
-          "
-                    
-          echo "main exit code: $?"
-          exit 0
+           curl > output 2>&1 &
+           cat output
