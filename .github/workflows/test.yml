@@ -9,14 +9,16 @@ jobs:
     steps:
       - name: Failing task
         run: |
-          externalcommand() { exit 1 }
+          externalcommand() {
+            exit 1;
+          };
         
           f() {
-            externalcommand || true
-            echo $?
-            externalcommand
-            echo $?
-            exit 0
-          }
+            externalcommand || true;
+            echo $?;
+            externalcommand;
+            echo $?;
+            exit 0;
+          };
           
-          f
+          f;
