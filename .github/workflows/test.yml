@@ -9,15 +9,20 @@ jobs:
     steps:
       - name: Failing task
         run: |
+          echo 'test'
           externalcommand() {
+            echo 'in externalcommand'
             exit 1;
           };
         
           f() {
+            echo 'calling externalcommand or true'
             externalcommand || true;
             echo $?;
+            echo 'calling externalcommand'
             externalcommand;
             echo $?;
+            echo 'calling exit0'
             exit 0;
           };
           
