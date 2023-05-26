@@ -17,6 +17,8 @@ jobs:
              if [[ ! "$1" -eq "3" ]]; then
                echo "should exit 1"
                curl # this exits with $? != 0
+               echo real_exit_code=$?
+               return 1
              fi
              echo "should exit 0"
              return 0
