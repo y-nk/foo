@@ -1,5 +1,4 @@
 name: Bug report
-description: Trying to reproduce a bug
 
 on:
   push:
