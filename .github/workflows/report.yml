@@ -9,8 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      - uses: actions/setup-node@v3
+    
       - run: |
-          echo "count=2" >> "$GITHUB_OUTPUT"
-          echo "list=foo,bar" >> "$GITHUB_OUTPUT"
-          echo 'array=["foo", "bar"]' >> "$GITHUB_OUTPUT"
-          cat $GITHUB_OUTPUT
+          echo '{ "scripts": { "foo": "echo foo;" } }' > package.json
+          
+      - run: |
+          yarn foo
