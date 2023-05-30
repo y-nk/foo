@@ -1,0 +1,17 @@
+name: Bug report
+description: Trying to reproduce a bug
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - run: |
+          echo "count=2" >> "$GITHUB_OUTPUT"
+          echo "list=foo,bar" >> "$GITHUB_OUTPUT"
+          echo 'array=["foo", "bar"]' >> "$GITHUB_OUTPUT"
+          cat $GITHUB_OUTPUT
