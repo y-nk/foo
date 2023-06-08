@@ -13,8 +13,7 @@ jobs:
           - foo
           - bar
 
-    outputs:
-      test-run: ${{ steps.test-run.outputs.result }}
+    outputs: ${{ fromJSON(steps.test-run.outputs) }}
 
     steps:
       - name: Failing task
@@ -24,7 +23,7 @@ jobs:
           NAME: ${{ matrix.name }}
         with:
           script: |
-            return process.env.NAME
+            core.exportVariable(process.env.NAME, 'foobar')
 
   test-summary:
     runs-on: ubuntu-latest
