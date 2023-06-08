@@ -4,27 +4,31 @@ on:
   push:
 
 jobs:
-  test:
+  test-run:
     runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        name:
+          - foo
+          - bar
+
+    outputs:
+      test-run: ${{ steps.test-run.outputs.result }}
+
     steps:
       - name: Failing task
-        run: |
-           function yarn_e2e() {
-             echo "attempt: $1"
-             if [[ ! "$1" -eq "3" ]]; then
-               echo "should exit 1"
-               curl # this exits with $? != 0
-               echo real_exit_code=$?
-               return 1
-             fi
-             echo "should exit 0"
-             return 0
-           }
-           
-           for attempt in {1..3}; do
-             yarn_e2e $attempt
-             code=$?
-             echo code=$code
-             [[ "$code" -eq "0" ]] && exit 0
-           done
-           exit 1
+        id: test-run
+        uses: actions/github-script@v6
+        env:
+          NAME: ${{ matrix.name }}
+        with:
+          script: |
+            return process.env.NAME
+
+  test-summary:
+    runs-on: ubuntu-latest
+    needs: test-run
+    
+    steps:
+      - run: echo "${{ toJSON(needs.test-run) }}"
