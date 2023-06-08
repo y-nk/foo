@@ -13,8 +13,6 @@ jobs:
           - foo
           - bar
 
-    outputs: ${{ fromJSON(steps.test-run.outputs) }}
-
     steps:
       - name: Failing task
         id: test-run
