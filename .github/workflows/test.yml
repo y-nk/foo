@@ -23,11 +23,23 @@ jobs:
           NAME: ${{ matrix.name }}
         with:
           script: |
-            core.exportVariable(process.env.NAME, 'foobar')
+            return process.env.NAME
+
+      - uses: cloudposse/github-action-matrix-outputs-write@main
+        with:
+          matrix-step-name: matrix-output
+          matrix-key: ${{ matrix.name }}
+          outputs: |-
+            ${{ matrix.name }}:${{ toJson(steps.test-run.outputs.result) }}
 
   test-summary:
     runs-on: ubuntu-latest
     needs: test-run
     
     steps:
-      - run: echo "${{ toJSON(needs.test-run) }}"
+      - uses: cloudposse/github-action-matrix-outputs-read@main
+        id: read
+        with:
+          matrix-step-name: build
+          
+      - run: echo "${{ toJSON(steps.read.outputs) }}"
