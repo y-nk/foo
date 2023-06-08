@@ -40,4 +40,4 @@ jobs:
         with:
           matrix-step-name: matrix
           
-      - run: echo "${{ toJSON(steps.read.outputs) }}"
+      - run: echo "${{ toJSON(steps.read.outputs.result) }}"
