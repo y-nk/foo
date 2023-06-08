@@ -25,10 +25,9 @@ jobs:
 
       - uses: cloudposse/github-action-matrix-outputs-write@main
         with:
-          matrix-step-name: matrix-output
+          matrix-step-name: matrix
           matrix-key: ${{ matrix.name }}
-          outputs: |-
-            ${{ matrix.name }}:${{ toJson(steps.test-run.outputs.result) }}
+          outputs: ${{ toJson(steps.test-run.outputs.result) }}
 
   test-summary:
     runs-on: ubuntu-latest
@@ -38,6 +37,6 @@ jobs:
       - uses: cloudposse/github-action-matrix-outputs-read@main
         id: read
         with:
-          matrix-step-name: build
+          matrix-step-name: matrix
           
-      - run: echo "${{ steps.read.outputs }}"
+      - run: echo "${{ toJSON(steps.read.outputs) }}"
