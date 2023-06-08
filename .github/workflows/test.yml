@@ -27,7 +27,8 @@ jobs:
         with:
           matrix-step-name: matrix
           matrix-key: ${{ matrix.name }}
-          outputs: ${{ toJson(steps.test-run.outputs.result) }}
+          outputs: |-
+            data: ${{ toJson(steps.test-run.outputs.result) }}
 
   test-summary:
     runs-on: ubuntu-latest
