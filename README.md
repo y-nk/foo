@@ -1,7 +1,7 @@
 # dx-cloud
 
 This repo is collection of small independent projects to support daily activities of engineers at taskworld (for now).
-The only assumption is that each project will be based on nodejs, and will have a package.json file.
+The only assumption is that each project will be based on nodejs, and will have a `package.json` and `yarn.lock` files.
 
 ## How to contribute?
 
