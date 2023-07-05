@@ -30,3 +30,4 @@ runs:
             .filter(path => path.includes('/')) // subfolders only
             .map(path => path.split('/', 1).at(0)) // base folder only
             .filter((e, i, a) => a.indexOf(e) === i) // remove duplicates
+            .filter(path => fs.existsSync(`./${path}`)) // remove deleted projects
