@@ -11,6 +11,6 @@ The only assumption is that each project will be based on nodejs, and will have 
 
 ## CI lifecycle
 
-1. Provide `yarn test` to allow PR testing
-1. Provide `yarn build` to allow build testing
-1. Provide `yarn deploy` to allow deployment
+1. Provide `yarn test` to allow testing (on PR commit)
+1. Provide `yarn build` to allow building (on PR commit and PR merge)
+1. Provide `yarn deploy` to allow deployment (on PR merge)
