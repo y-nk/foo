@@ -1,5 +1,9 @@
 name: 🚀
 
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   pull_request:
     types: ['closed']
@@ -49,7 +53,7 @@ jobs:
       - name: Try build
         working-directory: ${{ matrix.project }}
         run: npm run build --if-present
-        
+
       - name: Deploy
         working-directory: ${{ matrix.project }}
         continue-on-error: true
