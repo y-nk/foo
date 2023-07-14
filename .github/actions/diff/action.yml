@@ -25,6 +25,7 @@ runs:
       with:
         script: |
           // utility
+          const fs = require('fs/promises');
           const util = require('util');
           const bash = util.promisify(require('child_process').exec);
 
@@ -32,13 +33,13 @@ runs:
           const asyncFilter = async (arr, predicate) => {
             const results = await Promise.all(arr.map(predicate));
             return arr.filter((_v, index) => results[index]);
-          }
+          };
 
           // variables
-          const onlyDeployed = ${{ inputs.only-deployed }}
+          const onlyDeployed = ${{ inputs.only-deployed }};
 
-          const base = '${{ github.event.pull_request.base.sha || github.event.before }}'
-          const head = '${{ github.event.pull_request.head.sha || github.event.after }}'
+          const base = '${{ github.event.pull_request.base.sha || github.event.before }}';
+          const head = '${{ github.event.pull_request.head.sha || github.event.after }}';
 
           // script
           const { stdout } = await bash(`git diff --name-only ${base} ${head}`);
@@ -51,15 +52,20 @@ runs:
             .filter((e, i, a) => a.indexOf(e) === i) // remove duplicates
 
           return await asyncFilter(projects, async (project) => {
-            if (!fs.existsSync(`./${path}`)) return false // removed
-            if (!onlyDeployed) return true // include all projects
+            // removed
+            if (!fs.existsSync(`./${path}`)) return false;
 
+            // include all projects, no need to check more
+            if (!onlyDeployed) return true;
+
+            // get the base package.json to detect if there was a change
             const { stdout } = await bash(`git show ${base}:${packageJson}`);
 
-            if (!stdout.length) return true // new project, didnt exist on base
+             // didnt exist on base, new project
+            if (!stdout.length) return true;
 
-            const oldPackageJson = JSON.stringify(stdout)
-            const newPackageJson = require(packageJson)
+            const oldPackageJson = JSON.stringify(stdout);
+            const newPackageJson = require(packageJson);
 
             return oldPackageJson.version !== newPackageJson.version
           })
