@@ -62,11 +62,15 @@ runs:
             // get the base package.json to detect if there was a change
             const { stdout } = await bash(`git show ${base}:${packageJson}`);
 
+            console.log({ stdout })
+
              // didnt exist on base, new project
             if (!stdout.length) return true;
 
             const oldPackageJson = JSON.stringify(stdout);
             const newPackageJson = require(packageJson);
+
+            console.log({ oldPackageJson,newPackageJson })
 
             return oldPackageJson.version !== newPackageJson.version
           })
