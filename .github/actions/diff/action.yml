@@ -25,7 +25,7 @@ runs:
       with:
         script: |
           // utility
-          const fs = require('fs/promises');
+          const fs = require('fs');
           const util = require('util');
           const bash = util.promisify(require('child_process').exec);
 
