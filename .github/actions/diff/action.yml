@@ -57,7 +57,7 @@ runs:
 
           // 2nd pass of filtering
           return await asyncFilter(projects, async (path) => {
-            const packageJson = `${path}/package.json`
+            const packageJson = `./${path}/package.json`
 
             // get the base package.json to detect if there was a change
             const { stdout } = await bash(`git show ${base}:${packageJson}`);
