@@ -50,14 +50,13 @@ runs:
             .filter(path => path.includes('/')) // subfolders only
             .map(path => path.split('/', 1).at(0)) // base folder only
             .filter((e, i, a) => a.indexOf(e) === i) // remove duplicates
+            .filter(path => fs.existsSync(`./${path}`)) // filter removed
 
+          // return all
+          if (!onlyDeployed) return projects
+
+          // 2nd pass of filtering
           return await asyncFilter(projects, async (project) => {
-            // removed
-            if (!fs.existsSync(`./${path}`)) return false;
-
-            // include all projects, no need to check more
-            if (!onlyDeployed) return true;
-
             // get the base package.json to detect if there was a change
             const { stdout } = await bash(`git show ${base}:${packageJson}`);
 
