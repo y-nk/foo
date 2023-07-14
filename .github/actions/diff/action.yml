@@ -5,6 +5,11 @@ branding:
   icon: git-branch
   color: blue
 
+inputs:
+  only-deployed:
+    description: if true, filter out projects which package.json version field were not updated.
+    default: 'false'
+
 outputs:
   result:
     description: array of projects which have changed
@@ -19,20 +24,42 @@ runs:
       id: diff
       with:
         script: |
+          // utility
           const util = require('util');
           const bash = util.promisify(require('child_process').exec);
+
+          // see: https://advancedweb.hu/how-to-use-async-functions-with-array-filter-in-javascript/
+          const asyncFilter = async (arr, predicate) => {
+            const results = await Promise.all(arr.map(predicate));
+            return arr.filter((_v, index) => results[index]);
+          }
+
+          // variables
+          const onlyDeployed = ${{ inputs.only-deployed }}
 
           const base = '${{ github.event.pull_request.base.sha || github.event.before }}'
           const head = '${{ github.event.pull_request.head.sha || github.event.after }}'
 
-          const { stdout, stderr } = await bash(`git diff --name-only ${base} ${head}`);
+          // script
+          const { stdout } = await bash(`git diff --name-only ${base} ${head}`);
 
-          console.log({ base, head, stdout })
-
-          return stdout
+          const projects = stdout
             .split('\n')
             .filter(path => !path.startsWith('.')) // dotfiles ignored
             .filter(path => path.includes('/')) // subfolders only
             .map(path => path.split('/', 1).at(0)) // base folder only
             .filter((e, i, a) => a.indexOf(e) === i) // remove duplicates
-            .filter(path => fs.existsSync(`./${path}`)) // remove deleted projects
+
+          return await asyncFilter(projects, async (project) => {
+            if (!fs.existsSync(`./${path}`)) return false // removed
+            if (!onlyDeployed) return true // include all projects
+
+            const { stdout } = await bash(`git show ${base}:${packageJson}`);
+
+            if (!stdout.length) return true // new project, didnt exist on base
+
+            const oldPackageJson = JSON.stringify(stdout)
+            const newPackageJson = require(packageJson)
+
+            return oldPackageJson.version !== newPackageJson.version
+          })

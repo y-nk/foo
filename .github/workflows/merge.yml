@@ -24,6 +24,8 @@ jobs:
       - name: Find projects which have changed
         uses: ./.github/actions/diff
         id: diff
+        with:
+          only-deployed: true
 
   test:
     runs-on: ubuntu-latest
