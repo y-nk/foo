@@ -22,8 +22,8 @@ runs:
           const util = require('util');
           const bash = util.promisify(require('child_process').exec);
 
-          const base = '${{ github.event.pull_request.base.sha }}'
-          const head = '${{ github.event.pull_request.head.sha }}'
+          const base = '${{ github.event.pull_request.base.sha || github.event.before }}'
+          const head = '${{ github.event.pull_request.head.sha || github.event.after }}'
 
           const { stdout, stderr } = await bash(`git diff --name-only ${base} ${head}`);
 
