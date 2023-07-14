@@ -27,6 +27,8 @@ runs:
 
           const { stdout, stderr } = await bash('git diff --name-only ${base} ${head}');
 
+          console.log({ base, head, stdout })
+
           return stdout
             .split('\n')
             .filter(path => !path.startsWith('.')) // dotfiles ignored
