@@ -67,7 +67,7 @@ runs:
              // didnt exist on base, new project
             if (!stdout.length) return true;
 
-            const oldPackageJson = JSON.stringify(stdout);
+            const oldPackageJson = JSON.parse(stdout);
             const newPackageJson = require(packageJson);
 
             console.log({ oldPackageJson,newPackageJson })
