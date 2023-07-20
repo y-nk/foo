@@ -1,0 +1,14 @@
+name: 👀
+
+on:
+  push:
+   branches: [main]
+
+env: ${{ secrets }}
+
+jobs:
+  only-changed:
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: echo ${{ toJSON(env) }}
