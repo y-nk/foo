@@ -30,4 +30,4 @@ jobs:
       url: ${{ vars.ENVIRONMENT_URL }}
 
     steps:
-      - run: echo "${{ github }}"
+      - run: echo "${{ fromJSON(github) }}"
