@@ -12,22 +12,10 @@ on:
         default: 'staging'
 
 jobs:
-  get-env:
-    runs-on: ubuntu-latest
-
-    outputs:
-      env-name: ${{ steps.env-name.outputs.result }}
-
-    steps:
-      - id: env-name
-        run: echo "result=${{ inputs.env-name }}" >> "$GITHUB_OUTPUT"
   test:
     runs-on: ubuntu-latest
-    needs: get-env
-
-    environment:
-      name: ${{ needs.get-env.outputs.env-name }}
-      url: ${{ vars.ENVIRONMENT_URL }}
 
     steps:
-      - run: echo "${{ toJSON(github) }}"
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: nope/.node-version
