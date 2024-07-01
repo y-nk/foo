@@ -13,6 +13,6 @@
     "install": "npm install",
     "test": "npm test",
     "build": "npm build",
-    "publish": "npm publish"
+    "publish": "npm publish --dry-run"
   }
 }
