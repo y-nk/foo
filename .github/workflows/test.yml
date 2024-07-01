@@ -52,7 +52,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    needs: [source, only-changed]
+    needs: [upstream, only-changed]
 
     # should have at least one workspace to run (cannot have empty matrix)
     if: fromJSON(needs.only-changed.outputs.workspaces)[0] != null
