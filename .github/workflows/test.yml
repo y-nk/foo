@@ -47,18 +47,11 @@ jobs:
           experimental: true
           working_directory: ${{ matrix.workspace }}
 
-      - name: workspace info
-        working-directory: ${{ matrix.workspace }}
-        id: workspace-info
-        run: |
-          echo "cache-key=$(cat .mise.toml | yq .dependencies.key)" >> $GITHUB_OUTPUT
-          echo "cache-path=$(cat .mise.toml | yq .dependencies.path)" >> $GITHUB_OUTPUT
-
       - uses: actions/cache@v4
         id: cache
         with:
-          key: ${{ steps.workspace-info.outputs.cache-key }}
-          path: ${{ steps.workspace-info.outputs.cache-path }}
+          key: ${{ env.CI_CACHE_KEY }}
+          path: ${{ env.CI_CACHE_PATH }}
 
       - name: install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
