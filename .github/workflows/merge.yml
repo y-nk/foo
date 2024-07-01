@@ -52,6 +52,7 @@ jobs:
 
       # https://github.com/jdx/mise-action/issues/36#issuecomment-1925939877
       - name: export mise env
+        working-directory: ${{ matrix.workspace }}
         run: |
           mise env -s bash \
             | grep -v 'export PATH=' \
