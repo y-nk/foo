@@ -65,12 +65,14 @@ runs:
             // get the base package.json to detect if there was a change
             try {
               // get old version
-              await bash(`git checkout ${base}`);
-              const { stdout: oldVersion } = await bash(`cd "${path}" && mise tasks run version`);
+              const { stdout: oldVersion } = await bash(
+                `git checkout "${base}" &&cd "${path}" && mise tasks run version`
+              );
 
               // get new version
-              await bash(`git checkout HEAD`);
-              const { stdout: newVersion } = await bash(`cd "${path}" && mise tasks run version`);
+              const { stdout: newVersion } = await bash(
+                `git checkout "${head}" && cd "${path}" && mise tasks run version`
+              );
 
               core.info(JSON.stringify({ oldVersion, newVersion }, null, 2));
 
