@@ -26,13 +26,13 @@ jobs:
         id: cache
         with:
           key: upstream-${{ steps.cache.outputs.version }}
-          path: ./upstream
+          path: .upstream
 
       - name: download release
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
-          mkdir upstream
-          curl -sL "${${{ steps.outputs.upstream.url }}}" | tar xz --directory=upstream --strip-components=1
+          mkdir .upstream
+          curl -sL "${${{ steps.outputs.upstream.url }}}" | tar xz --directory=.upstream --strip-components=1
 
   only-changed:
     runs-on: ubuntu-latest

@@ -19,7 +19,7 @@ jobs:
         id: cache
         with:
           key: upstream-${{ steps.fetch.outputs.version }}
-          path: ./upstream
+          path: .upstream
 
       - if: steps.cache.outputs.cache-hit == 'true'
         run: echo 'exit 1'
