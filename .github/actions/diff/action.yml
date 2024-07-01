@@ -74,8 +74,7 @@ runs:
                 `git checkout "${head}" && cd "${path}" && mise tasks run version`
               );
 
-              core.info(JSON.stringify({ oldVersion, newVersion }, null, 2));
-
+              core.info(`${path}: ${oldVersion} -> ${newVersion}`);
               return oldVersion !== newVersion
             } catch (err) {
               core.info(err)
