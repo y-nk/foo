@@ -62,7 +62,6 @@ runs:
 
           // 2nd pass of filtering
           return await asyncFilter(workspaces, async (path) => {
-            // get the base package.json to detect if there was a change
             try {
               // get old version
               const oldVersion = await bash(
