@@ -1,0 +1,18 @@
+{
+  "image": {
+    "uses": "actions/setup-node@v4",
+    "with": {
+      "node-version": "20"
+    }
+  },
+  "version": {
+    "file": "package.json",
+    "get": "cat package.json | jq .version"
+  },
+  "commands": {
+    "install": "npm install",
+    "test": "npm test",
+    "build": "npm build",
+    "publish": "npm publish"
+  }
+}

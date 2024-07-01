@@ -1,0 +1,74 @@
+name: Find workspaces which were updated
+description: ''
+
+branding:
+  icon: git-branch
+  color: blue
+
+inputs:
+  only-deployed:
+    description: if true, filter out workspaces which package.json version field were not updated.
+    default: 'false'
+
+outputs:
+  result:
+    description: array of workspaces which have changed
+    value: ${{ steps.diff.outputs.result }}
+
+runs:
+  using: composite
+
+  steps:
+    - name: compute
+      uses: actions/github-script@v6
+      id: diff
+      with:
+        script: |
+          // utility
+          const fs = require('fs');
+          const util = require('util');
+          const bash = util.promisify(require('child_process').exec);
+
+          // see: https://advancedweb.hu/how-to-use-async-functions-with-array-filter-in-javascript/
+          const asyncFilter = async (arr, predicate) => {
+            const results = await Promise.all(arr.map(predicate));
+            return arr.filter((_v, index) => results[index]);
+          };
+
+          const base = '${{ github.event.pull_request.base.sha || github.event.before }}';
+          const head = '${{ github.event.pull_request.head.sha || github.event.after }}';
+
+          // script
+          const { stdout } = await bash(`git diff --name-only ${base} ${head}`);
+
+          const workspaces = stdout
+            .split('\n')
+            .filter(path => !path.startsWith('.')) // dotfiles ignored
+            .filter(path => path.includes('/')) // subfolders only
+            .map(path => path.split('/', 1).at(0)) // base folder only
+            .filter((e, i, a) => a.indexOf(e) === i) // remove duplicates
+            .filter(path => fs.existsSync(`./${path}`)) // filter removed
+
+          // return all
+          if (!onlyDeployed) return workspaces
+
+          // 2nd pass of filtering
+          return await asyncFilter(workspaces, async (path) => {
+            const { version } = require(`./${path}/workspace.json`)
+
+            // get the base package.json to detect if there was a change
+            try {
+              // get old version
+              await bash(`git checkout ${base} -- ./${path}/${version.file}`);
+              const { stdout: oldVersion } = await bash(version.get);
+
+              // get new version
+              await bash(`git checkout HEAD -- ./${path}/${version.file}`);
+              const { stdout: newVersion } = await bash(version.get);
+
+              return oldVersion !== newVersion
+            } catch (err) {
+              // most likely a new workspace.
+              return true
+            }
+          })
