@@ -65,7 +65,7 @@ runs:
 
               // get new version
               await bash(`git checkout HEAD`);
-              const { stdout: newVersion } = await bash(cd "${path}" && mise tasks run version);
+              const { stdout: newVersion } = await bash(`cd "${path}" && mise tasks run version`);
 
               return oldVersion !== newVersion
             } catch (err) {
