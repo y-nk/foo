@@ -62,7 +62,7 @@ jobs:
       - uses: actions/cache@v4
         id: cache
         with:
-          key: ${{ env.CI_CACHE_KEY }}
+          key: ${{ hashFiles(env.CI_CACHE_KEY) }}
           path: ${{ env.CI_CACHE_PATH }}
 
       - name: install
