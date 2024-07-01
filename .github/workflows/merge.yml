@@ -5,7 +5,8 @@ concurrency:
   cancel-in-progress: true
 
 on:
-  pull_request:
+  push:
+    branches: ['main']
 
 env: ${{ secrets }}
 
@@ -25,6 +26,8 @@ jobs:
       - name: find workspaces which have changed
         uses: ./.github/actions/diff
         id: diff
+        with:
+          only-deployed: true
 
   test:
     runs-on: ubuntu-latest
@@ -62,15 +65,15 @@ jobs:
           key: ${{ hashFiles(env.CI_CACHE_KEY) }}
           path: ${{ env.CI_CACHE_PATH }}
 
-      - name: install dependencies
+      - name: install
         if: steps.cache.outputs.cache-hit != 'true'
         working-directory: ${{ matrix.workspace }}
         run: mise tasks run install
 
-      - name: run tests
-        working-directory: ${{ matrix.workspace }}
-        run: mise tasks run test
-
-      - name: try building
+      - name: build
         working-directory: ${{ matrix.workspace }}
         run: mise tasks run build
+
+      - name: deploy
+        working-directory: ${{ matrix.workspace }}
+        run: mise tasks run deploy

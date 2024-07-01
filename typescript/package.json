@@ -1,13 +1,20 @@
 {
   "name": "typescript",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo 'test'",
     "build": "echo 'build'"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "keywords": [
+    "iso-3166",
+    "country",
+    "list",
+    "json"
+  ],
+  "author": "Julien Barbay <julien.barbay@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.5.2"
+  }
 }
