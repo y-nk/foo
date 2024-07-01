@@ -19,6 +19,11 @@ runs:
   using: composite
 
   steps:
+    - uses: jdx/mise-action@v2
+      with:
+        experimental: true
+        install: false
+
     - name: compute
       uses: actions/github-script@v6
       id: diff
