@@ -72,7 +72,7 @@ runs:
               await bash(`git checkout HEAD`);
               const { stdout: newVersion } = await bash(`cd "${path}" && mise tasks run version`);
 
-              core.info({ oldVersion, newVersion })
+              core.info(JSON.stringify({ oldVersion, newVersion }, null, 2));
 
               return oldVersion !== newVersion
             } catch (err) {
