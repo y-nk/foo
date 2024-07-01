@@ -20,8 +20,8 @@ jobs:
         run: |
           release=$(curl https://api.github.com/repos/lukes/ISO-3166-Countries-with-Regional-Codes/releases/latest)
 
-          echo "version=$(echo release | jq -r .tag_name)" >> $GITHUB_OUTPUT
-          echo "url=$(echo release | jq -r .tarball_url)" >> $GITHUB_OUTPUT
+          echo "version=$(echo ${release} | jq -r .tag_name)" >> $GITHUB_OUTPUT
+          echo "url=$(echo ${release} | jq -r .tarball_url)" >> $GITHUB_OUTPUT
 
       - uses: actions/cache@v4
         id: cache
