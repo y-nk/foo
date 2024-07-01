@@ -1,6 +1,6 @@
 [env]
-CI_CACHE_KEY = "./package-lock.json"
-CI_CACHE_PATH = "./node_modules"
+CI_CACHE_KEY = "typescript/package-lock.json"
+CI_CACHE_PATH = "typescript/node_modules"
 
 [tasks.version]
 run = "cat package.json | jq .version"

@@ -50,6 +50,14 @@ jobs:
           experimental: true
           working_directory: ${{ matrix.workspace }}
 
+      # https://github.com/jdx/mise-action/issues/36#issuecomment-1925939877
+      - name: export mise env
+        run: |
+          mise env -s bash \
+            | grep -v 'export PATH=' \
+            | cut -d' ' -f2 \
+            >> "$GITHUB_ENV"
+
       - uses: actions/cache@v4
         id: cache
         with:
