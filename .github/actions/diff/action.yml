@@ -67,10 +67,11 @@ runs:
               await bash(`git checkout HEAD`);
               const { stdout: newVersion } = await bash(`cd "${path}" && mise tasks run version`);
 
-              console.log({ oldVersion, newVersion })
+              core.info({ oldVersion, newVersion })
 
               return oldVersion !== newVersion
             } catch (err) {
+              core.info(err)
               // most likely a new workspace.
               return true
             }
