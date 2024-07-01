@@ -17,13 +17,13 @@ jobs:
       workspaces: ${{ steps.diff.outputs.result }}
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: checkout repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Find workspaces which have changed
-        uses: ./.github/actions/monorepo-diff
+      - name: find workspaces which have changed
+        uses: ./.github/actions/diff
         id: diff
 
   test:
@@ -39,19 +39,22 @@ jobs:
       fail-fast: false
 
     steps:
-      - name: checkout workspace
-        uses: actions/checkout@v3
+      - name: checkout repository
+        uses: actions/checkout@v4
 
-      - name: prepare workspace
-        id: setup
-        uses: ./.github/actions/prepare-workspace
+      - uses: jdx/mise-action@v2
         with:
-          workspace: ${{ matrix.workspace }}
+          experimental: true
+          working_directory: ${{ matrix.workspace }}
 
-      - name: Run tests
+      - name: install dependencies
         working-directory: ${{ matrix.workspace }}
-        run: ${{ steps.setup.outputs.test }}
+        run: mise tasks run install
 
-      - name: Try build
+      - name: run tests
         working-directory: ${{ matrix.workspace }}
-        run: ${{ steps.setup.outputs.build }}
+        run: mise tasks run test
+
+      - name: try building
+        working-directory: ${{ matrix.workspace }}
+        run: mise tasks run build

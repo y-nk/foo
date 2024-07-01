@@ -57,17 +57,15 @@ runs:
 
           // 2nd pass of filtering
           return await asyncFilter(workspaces, async (path) => {
-            const { version } = require(`./${path}/workspace.json`)
-
             // get the base package.json to detect if there was a change
             try {
               // get old version
-              await bash(`git checkout ${base} -- ./${path}/${version.file}`);
-              const { stdout: oldVersion } = await bash(version.get);
+              await bash(`git checkout ${base}`);
+              const { stdout: oldVersion } = await bash(`cd "${path}" && mise tasks run version`);
 
               // get new version
-              await bash(`git checkout HEAD -- ./${path}/${version.file}`);
-              const { stdout: newVersion } = await bash(version.get);
+              await bash(`git checkout HEAD`);
+              const { stdout: newVersion } = await bash(cd "${path}" && mise tasks run version);
 
               return oldVersion !== newVersion
             } catch (err) {

@@ -1,0 +1,14 @@
+[tasks.version]
+run = "cat package.json | jq .version"
+
+[tasks.install]
+run = "npm install"
+
+[tasks.test]
+run = "npm test"
+
+[tasks.build]
+run = "npm build"
+
+[tasks.deploy]
+run = "npm publish --dry-run"
