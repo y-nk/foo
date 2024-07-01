@@ -11,6 +11,30 @@ on:
 env: ${{ secrets }}
 
 jobs:
+  upstream:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: upstream infos
+        id: upstream
+        run: |
+          release=$(curl https://api.github.com/repos/lukes/ISO-3166-Countries-with-Regional-Codes/releases/latest)
+
+          echo "version=$(echo release | jq -r .tag_name)" >> $GITHUB_OUTPUT
+          echo "url=$(echo release | jq -r .tarball_url)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          key: upstream-${{ steps.cache.outputs.version }}
+          path: ./upstream
+
+      - name: download release
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          mkdir upstream
+          curl -sL "${${{ steps.outputs.upstream.url }}}" | tar xz --directory=upstream --strip-components=1
+
   only-changed:
     runs-on: ubuntu-latest
 
@@ -42,6 +66,11 @@ jobs:
       fail-fast: false
 
     steps:
+      - uses: actions/cache@v4
+        with:
+          restore-keys: |
+            upstream-
+
       - name: checkout repository
         uses: actions/checkout@v4
 

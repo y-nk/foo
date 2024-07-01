@@ -1,0 +1,29 @@
+name: ⚙️
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: upstream infos
+        id: upstream
+        run: |
+          release=$(curl https://api.github.com/repos/lukes/ISO-3166-Countries-with-Regional-Codes/releases/latest)
+
+          echo "version=$(echo release | jq -r .tag_name)" >> $GITHUB_OUTPUT
+          echo "url=$(echo release | jq -r .tarball_url)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          key: upstream-${{ steps.fetch.outputs.version }}
+          path: ./upstream
+
+      - if: steps.cache.outputs.cache-hit == 'true'
+        run: echo 'exit 1'
+
+      - name: release all workspaces
+        run: |
+          echo "need to set major to something parsed of ${{ steps.fetch.outputs.version }}"
