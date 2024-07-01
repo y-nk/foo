@@ -1,3 +1,7 @@
+[dependencies]
+key = "./package-lock.json"
+path = "./node_modules"
+
 [tasks.version]
 run = "cat package.json | jq .version"
 
