@@ -50,6 +50,7 @@ jobs:
       - name: workspace info
         working-directory: ${{ matrix.workspace }}
         id: workspace-info
+        run: |
           echo "cache-key=$(cat .mise.toml | yq .dependencies.key)" >> $GITHUB_OUTPUT
           echo "cache-path=$(cat .mise.toml | yq .dependencies.path)" >> $GITHUB_OUTPUT
 
