@@ -20,12 +20,8 @@ jobs:
         run: |
           release=$(curl -sL "https://api.github.com/repos/lukes/ISO-3166-Countries-with-Regional-Codes/releases/latest")
 
-          version=$($echo "${release}" | jq -r .tag_name)
-          url=$(echo "${release}" | jq -r .tarball_url)
-
-          echo "release=${release}"
-          echo "version=${version}"
-          echo "url=${url}"
+          version=$(echo "${release}" | jq -r ".tag_name")
+          url=$(echo "${release}" | jq -r ".tarball_url")
 
           echo "version=${version}" >> $GITHUB_OUTPUT
           echo "url=${url}" >> $GITHUB_OUTPUT
