@@ -18,7 +18,6 @@ jobs:
         id: upstream
         run: |
           release=$(curl -sL https://api.github.com/repos/lukes/ISO-3166-Countries-with-Regional-Codes/releases/latest)
-          echo ${release}
 
           echo "version=$(echo ${release} | jq -r .tag_name)" >> $GITHUB_OUTPUT
           echo "url=$(echo ${release} | jq -r .tarball_url)" >> $GITHUB_OUTPUT
