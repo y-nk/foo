@@ -22,20 +22,23 @@ jobs:
           version=$(echo "${release}" | jq -r ".tag_name")
           url=$(echo "${release}" | jq -r ".tarball_url")
 
+          echo "version=${version}"
+          echo "url=${url}"
+
           echo "version=${version}" >> $GITHUB_OUTPUT
           echo "url=${url}" >> $GITHUB_OUTPUT
 
       - uses: actions/cache@v4
         id: cache
         with:
-          key: upstream-${{ steps.cache.outputs.version }}
+          key: upstream-${{ steps.upstream.outputs.version }}
           path: .upstream
 
-      - name: download release
+      - name: download new release
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
           mkdir .upstream
-          curl -sL "${${{ steps.outputs.upstream.url }}}" | tar xz --directory=.upstream --strip-components=1
+          curl -sL "${{ steps.upstream.outputs.url }}" | tar xz --directory=.upstream --strip-components=1
 
   only-changed:
     runs-on: ubuntu-latest

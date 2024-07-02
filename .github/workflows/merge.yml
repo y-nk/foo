@@ -35,7 +35,7 @@ jobs:
           key: upstream-${{ steps.upstream.outputs.version }}
           path: .upstream
 
-      - name: download release
+      - name: download new release
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
           mkdir .upstream
