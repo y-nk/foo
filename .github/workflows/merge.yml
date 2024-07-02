@@ -32,14 +32,14 @@ jobs:
       - uses: actions/cache@v4
         id: cache
         with:
-          key: upstream-${{ steps.cache.outputs.version }}
+          key: upstream-${{ steps.upstream.outputs.version }}
           path: .upstream
 
       - name: download release
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
           mkdir .upstream
-          curl -sL "${${{ steps.outputs.upstream.url }}}" | tar xz --directory=.upstream --strip-components=1
+          curl -sL "${{ steps.upstream.outputs.url }}" | tar xz --directory=.upstream --strip-components=1
 
   only-changed:
     runs-on: ubuntu-latest
