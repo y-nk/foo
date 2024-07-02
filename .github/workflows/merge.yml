@@ -23,6 +23,9 @@ jobs:
           version=$($echo "${release}" | jq -r .tag_name)
           url=$(echo "${release}" | jq -r .tarball_url)
 
+          echo "version=${version}"
+          echo "url=${url}"
+
           echo "version=${version}" >> $GITHUB_OUTPUT
           echo "url=${url}" >> $GITHUB_OUTPUT
 
