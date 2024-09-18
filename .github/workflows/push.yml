@@ -1,0 +1,11 @@
+name: HashFiles
+
+on:
+  push:
+    main
+
+jobs:
+  test-hash:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ hashFiles(format('{}/**', 'foo/') }}"
