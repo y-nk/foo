@@ -2,7 +2,7 @@ name: WF
 run-name: test ${{ inputs.name }}
 
 on:
-  workflow-call:
+  workflow_call:
     inputs:
       name:
         type: string
