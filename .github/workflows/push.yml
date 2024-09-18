@@ -9,4 +9,5 @@ jobs:
   test-hash:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - run: echo "${{ hashFiles(format('{0}/**', 'foo/')) }}"
