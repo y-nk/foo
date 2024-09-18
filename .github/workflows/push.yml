@@ -2,7 +2,8 @@ name: HashFiles
 
 on:
   push:
-    main
+    branches:
+      - main
 
 jobs:
   test-hash:
