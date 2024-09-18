@@ -1,0 +1,20 @@
+name: WF
+run-name: test ${{ inputs.name }}
+
+on:
+  workflow-call:
+    inputs:
+      name:
+        type: string
+        required: true
+        description: foo
+
+jobs:
+  run-call:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - run: echo "${{ hashFiles(format('./{0}/**', inputs.name)) }}"

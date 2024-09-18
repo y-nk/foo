@@ -7,10 +7,11 @@ on:
 
 jobs:
   test-hash:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
+    strategy:
+      matrix:
+        workspace: ['foo', 'bar']
 
-      - run: echo "${{ hashFiles(format('{0}/**', 'foo/')) }}"
+    uses: ./.github/workflows/wf.yml
+    with:
+      name: ${{ matrix.workspace }}
+    secrets: inherit
