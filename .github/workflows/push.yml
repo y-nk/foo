@@ -9,4 +9,4 @@ jobs:
   test-hash:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "${{ hashFiles(format('{}/**', 'foo/') }}"
+      - run: echo "${{ hashFiles(format('{}/**', 'foo/')) }}"
